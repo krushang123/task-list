@@ -22,10 +22,19 @@ export const tasksSlice = createSlice({
       const index = state.findIndex((task) => task.id === action.payload.id)
       state.splice(index, 1)
     },
+    updateTask: (state, action: PayloadAction<TaskState>) => {
+      const index = state.findIndex((task) => task.id === action.payload.id)
+
+      // eslint-disable-next-line no-param-reassign
+      state[index] = {
+        ...state[index],
+        ...action.payload,
+      }
+    },
   },
 })
 
-export const { createTask, removeTask } = tasksSlice.actions
+export const { createTask, removeTask, updateTask } = tasksSlice.actions
 
 export const selectTasks = (state: RootState) => state.tasks
 
