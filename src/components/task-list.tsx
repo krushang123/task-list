@@ -1,5 +1,32 @@
 import React from "react"
+import { Grid } from "semantic-ui-react"
 
-const TaskList = () => <div>task list</div>
+import Task from "./task"
+
+const TaskList = () => (
+  <Grid columns={3}>
+    <Grid.Row>
+      <Grid.Column>
+        <Task />
+      </Grid.Column>
+
+      <Grid.Column>
+        <Task />
+      </Grid.Column>
+
+      <Grid.Column>
+        <Task />
+      </Grid.Column>
+
+      <Grid.Column>
+        <Task />
+      </Grid.Column>
+
+      <Grid.Column>
+        <Task />
+      </Grid.Column>
+    </Grid.Row>
+  </Grid>
+)
 
 export default TaskList
