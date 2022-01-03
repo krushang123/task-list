@@ -15,9 +15,11 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
     "paths": {
-      "public/*": ["/public/*"],
-      "components/*": ["/src/components/*"]
+      "public/*": ["public/*"],
+      "components/*": ["src/components/*"],
+      "app/*": ["src/app/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "src"],

@@ -1,6 +1,10 @@
 import React from "react"
 import { Button, Form } from "semantic-ui-react"
 import { SubmitHandler, useForm } from "react-hook-form"
+import { v4 as uuidv4 } from "uuid"
+
+import { useAppDispatch } from "../app/hooks"
+import { createTask } from "./tasksSlice"
 
 type FormValues = {
   title: string
@@ -8,6 +12,8 @@ type FormValues = {
 }
 
 const AddTask = () => {
+  const dispatch = useAppDispatch()
+
   const {
     register,
     handleSubmit,
@@ -18,7 +24,15 @@ const AddTask = () => {
   })
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(data)
+    dispatch(
+      createTask({
+        id: uuidv4(),
+        title: data.title,
+        description: data.description,
+        status: "pending",
+      }),
+    )
+
     reset()
   }
 

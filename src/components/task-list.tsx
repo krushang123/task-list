@@ -1,32 +1,24 @@
 import React from "react"
 import { Grid } from "semantic-ui-react"
 
+import { useAppSelector } from "../app/hooks"
 import Task from "./task"
+import { selectTasks } from "./tasksSlice"
 
-const TaskList = () => (
-  <Grid columns={3}>
-    <Grid.Row>
-      <Grid.Column>
-        <Task />
-      </Grid.Column>
+const TaskList = () => {
+  const tasks = useAppSelector(selectTasks)
 
-      <Grid.Column>
-        <Task />
-      </Grid.Column>
-
-      <Grid.Column>
-        <Task />
-      </Grid.Column>
-
-      <Grid.Column>
-        <Task />
-      </Grid.Column>
-
-      <Grid.Column>
-        <Task />
-      </Grid.Column>
-    </Grid.Row>
-  </Grid>
-)
+  return (
+    <Grid columns={3} style={{ width: "100%" }}>
+      <Grid.Row>
+        {tasks.map((task) => (
+          <Grid.Column key={task.id}>
+            <Task title={task.title} description={task.description} />
+          </Grid.Column>
+        ))}
+      </Grid.Row>
+    </Grid>
+  )
+}
 
 export default TaskList
