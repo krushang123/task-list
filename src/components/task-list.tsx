@@ -13,7 +13,12 @@ const TaskList = () => {
       <Grid.Row>
         {tasks.map((task) => (
           <Grid.Column key={task.id}>
-            <Task title={task.title} description={task.description} />
+            <Task
+              title={task.title}
+              description={task.description}
+              id={task.id}
+              status={task.status}
+            />
           </Grid.Column>
         ))}
       </Grid.Row>
