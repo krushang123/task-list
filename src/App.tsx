@@ -2,14 +2,16 @@ import React from "react"
 import { Container, Header } from "semantic-ui-react"
 import { DragDropContext, DropResult } from "react-beautiful-dnd"
 
-import { useAppSelector } from "./app/hooks"
-import { selectTasks } from "./components/tasksSlice"
+import { useAppDispatch, useAppSelector } from "./app/hooks"
+import { reorderTasks, selectTasks } from "./components/tasksSlice"
 import AddTask from "./components/add-task"
 import TaskList from "./components/task-list"
 import { TaskType } from "./types"
 import { reorderTaskMap } from "./components/reorder"
 
 const App = () => {
+  const dispatch = useAppDispatch()
+
   const tasks: TaskType[] = useAppSelector(selectTasks)
 
   const alpha: string = "alpha"
@@ -47,8 +49,10 @@ const App = () => {
       })
 
       setTaskMap(reorderTask.taskMap)
+
+      dispatch(reorderTasks(result))
     },
-    [taskMap],
+    [dispatch, taskMap],
   )
 
   return (

@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { DropResult } from "react-beautiful-dnd"
 
 import { RootState } from "../app/store"
 
@@ -31,10 +32,27 @@ export const tasksSlice = createSlice({
         ...action.payload,
       }
     },
+    reorderTasks: (state, action: PayloadAction<DropResult>) => {
+      const movedTask = state.filter(
+        (task, index) => index === action.payload.source.index,
+      )
+      const remainingTasks = state.filter(
+        (task, index) => index !== action.payload.source.index,
+      )
+
+      const reorderedTasks = [
+        ...remainingTasks.slice(0, action.payload.destination?.index),
+        movedTask[0],
+        ...remainingTasks.slice(action.payload.destination?.index),
+      ]
+
+      return reorderedTasks
+    },
   },
 })
 
-export const { createTask, removeTask, updateTask } = tasksSlice.actions
+export const { createTask, removeTask, updateTask, reorderTasks } =
+  tasksSlice.actions
 
 export const selectTasks = (state: RootState) => state.tasks
 
