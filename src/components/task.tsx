@@ -81,8 +81,9 @@ const Task = ({ title, description, id, status }: TaskProps) => {
 
   const onCancel = React.useCallback(() => {
     setTitleVal(title)
+    setDescVal(description)
     setIsEditable(false)
-  }, [title])
+  }, [description, title])
 
   const onRemoveTask = React.useCallback(() => {
     dispatch(
@@ -138,6 +139,7 @@ const Task = ({ title, description, id, status }: TaskProps) => {
             label='Complete'
             value={id}
             onChange={onStatusChange}
+            checked={status === "completed"}
           />
 
           {!isEditable && (
