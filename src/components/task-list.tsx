@@ -1,28 +1,64 @@
 import React from "react"
-import { Grid } from "semantic-ui-react"
+import { Grid, Ref } from "semantic-ui-react"
+import {
+  Draggable,
+  DraggableProvided,
+  DraggableStateSnapshot,
+  Droppable,
+  DroppableProvided,
+} from "react-beautiful-dnd"
 
-import { useAppSelector } from "../app/hooks"
+import { TaskType } from "../types"
 import Task from "./task"
-import { selectTasks } from "./tasksSlice"
 
-const TaskList = () => {
-  const tasks = useAppSelector(selectTasks)
+type TaskListProps = {
+  tasks: TaskType[]
+  listId: string
+  listType: string
+}
+
+const TaskList = (props: TaskListProps) => {
+  const { tasks, listId, listType } = props
 
   return (
-    <Grid columns={3} style={{ width: "100%" }}>
-      <Grid.Row>
-        {tasks.map((task) => (
-          <Grid.Column key={task.id}>
-            <Task
-              title={task.title}
-              description={task.description}
-              id={task.id}
-              status={task.status}
-            />
-          </Grid.Column>
-        ))}
-      </Grid.Row>
-    </Grid>
+    <Droppable droppableId={listId} type={listType} direction='horizontal'>
+      {(droppableProvided: DroppableProvided) => (
+        <Ref innerRef={droppableProvided.innerRef}>
+          <Grid
+            columns={3}
+            style={{ width: "100%" }}
+            {...droppableProvided.droppableProps}
+          >
+            <Grid.Row>
+              {tasks.map((task, index) => (
+                <Draggable draggableId={task.id} index={index} key={task.id}>
+                  {(
+                    draggableProvided: DraggableProvided,
+                    draggableSnapshot: DraggableStateSnapshot,
+                  ) => (
+                    <Grid.Column
+                      key={task.id}
+                      style={{ marginBottom: "2rem", width: "25rem" }}
+                    >
+                      <Ref innerRef={draggableProvided.innerRef}>
+                        <Task
+                          title={task.title}
+                          description={task.description}
+                          id={task.id}
+                          status={task.status}
+                          snapshot={draggableSnapshot}
+                          provided={draggableProvided}
+                        />
+                      </Ref>
+                    </Grid.Column>
+                  )}
+                </Draggable>
+              ))}
+            </Grid.Row>
+          </Grid>
+        </Ref>
+      )}
+    </Droppable>
   )
 }
 

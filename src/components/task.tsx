@@ -1,5 +1,6 @@
 import React from "react"
 import { Button, Card, Checkbox, Icon, Input } from "semantic-ui-react"
+import { DraggableProvided, DraggableStateSnapshot } from "react-beautiful-dnd"
 
 import { useAppDispatch } from "../app/hooks"
 import { removeTask, updateTask } from "./tasksSlice"
@@ -21,6 +22,8 @@ type TaskProps = {
   title: string
   description: string
   status: "completed" | "pending"
+  snapshot: DraggableStateSnapshot
+  provided: DraggableProvided
 }
 
 const CardTitle = ({ titleVal, setTitleVal, isEditable }: CardTitleProps) => {
@@ -59,7 +62,14 @@ const CardDesc = ({ descVal, setDescVal, isEditable }: CardDescProps) => {
   )
 }
 
-const Task = ({ title, description, id, status }: TaskProps) => {
+const Task = ({
+  title,
+  description,
+  id,
+  status,
+  snapshot,
+  provided,
+}: TaskProps) => {
   const [titleVal, setTitleVal] = React.useState<string>(title)
   const [descVal, setDescVal] = React.useState<string>(description)
   const [isEditable, setIsEditable] = React.useState<boolean>(false)
@@ -111,7 +121,11 @@ const Task = ({ title, description, id, status }: TaskProps) => {
   )
 
   return (
-    <Card style={{ marginBottom: "2rem", width: "25rem" }}>
+    <Card
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
+      snapshot={snapshot}
+    >
       <Card.Content
         header={
           <CardTitle
