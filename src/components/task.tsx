@@ -95,6 +95,20 @@ const Task = ({ title, description, id, status }: TaskProps) => {
     )
   }, [description, dispatch, id, status, title])
 
+  const onStatusChange = React.useCallback(
+    (event) => {
+      dispatch(
+        updateTask({
+          id,
+          title,
+          description,
+          status: event.target.checked ? "completed" : "pending",
+        }),
+      )
+    },
+    [description, dispatch, id, title],
+  )
+
   return (
     <Card style={{ marginBottom: "2rem", width: "25rem" }}>
       <Card.Content
@@ -119,7 +133,13 @@ const Task = ({ title, description, id, status }: TaskProps) => {
 
       <Card.Content extra>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <Checkbox id='task-complete' label='Complete' />
+          <Checkbox
+            id={id}
+            label='Complete'
+            value={id}
+            onChange={onStatusChange}
+          />
+
           {!isEditable && (
             <Button icon onClick={() => setIsEditable(true)}>
               <Icon name='edit' />
